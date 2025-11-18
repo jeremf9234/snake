@@ -4,11 +4,19 @@ const scoreEl = document.getElementById('score');
 const bestScoreEl = document.getElementById('bestScore');
 const restartBtn = document.getElementById('restartBtn');
 const modeSelect = document.getElementById('modeSelect');
+const instructionsText = document.getElementById('instructionsText');
+const touchHint = document.getElementById('touchHint');
+const touchControls = document.getElementById('touchControls');
 
 const GRID_SIZE = 20;
 const SPEED = 10; // moves per second
 const STORAGE_KEY = 'snake-best-score';
 const boardTiles = canvas.width / GRID_SIZE;
+const SWIPE_THRESHOLD = 28;
+const isTouchDevice =
+  window.matchMedia('(pointer: coarse)').matches ||
+  'ontouchstart' in window ||
+  navigator.maxTouchPoints > 0;
 
 let snake = [];
 let direction = { x: 1, y: 0 };
@@ -21,8 +29,13 @@ let lastStepTime = 0;
 let isRunning = false;
 let gameOver = false;
 let mode = modeSelect.value;
+let swipeStart = null;
 
 bestScoreEl.textContent = bestScore;
+
+if (isTouchDevice) {
+  activateTouchMode();
+}
 
 function startGame() {
   snake = [
@@ -68,6 +81,25 @@ function setDirection(x, y) {
     return; // prevent reversing instantly
   }
   nextDirection = { x, y };
+}
+
+function setDirectionFromName(name) {
+  switch (name) {
+    case 'up':
+      setDirection(0, -1);
+      break;
+    case 'down':
+      setDirection(0, 1);
+      break;
+    case 'left':
+      setDirection(-1, 0);
+      break;
+    case 'right':
+      setDirection(1, 0);
+      break;
+    default:
+      break;
+  }
 }
 
 document.addEventListener('keydown', event => {
@@ -124,6 +156,76 @@ modeSelect.addEventListener('change', () => {
   mode = modeSelect.value;
   startGame();
 });
+
+function activateTouchMode() {
+  document.body.classList.add('is-touch');
+  if (instructionsText) {
+    instructionsText.textContent =
+      'Glisse le doigt sur la grille ou utilise les boutons tactiles pour guider le serpent. Les modes classique et portails restent disponibles sur mobile.';
+  }
+  if (touchHint) {
+    touchHint.textContent = 'Mode tactile détecté automatiquement 🤳';
+  }
+  if (touchControls) {
+    touchControls.setAttribute('aria-hidden', 'false');
+    const buttons = touchControls.querySelectorAll('[data-direction]');
+    buttons.forEach(button => {
+      const handler = event => {
+        event.preventDefault();
+        setDirectionFromName(button.dataset.direction);
+      };
+      button.addEventListener('touchstart', handler, { passive: false });
+      button.addEventListener('click', handler);
+    });
+  }
+
+  canvas.addEventListener(
+    'touchstart',
+    event => {
+      if (event.touches.length > 0) {
+        swipeStart = {
+          x: event.touches[0].clientX,
+          y: event.touches[0].clientY
+        };
+      }
+    },
+    { passive: true }
+  );
+
+  canvas.addEventListener(
+    'touchmove',
+    event => {
+      if (!swipeStart || event.touches.length === 0) return;
+      const deltaX = event.touches[0].clientX - swipeStart.x;
+      const deltaY = event.touches[0].clientY - swipeStart.y;
+      const absX = Math.abs(deltaX);
+      const absY = Math.abs(deltaY);
+
+      if (absX < SWIPE_THRESHOLD && absY < SWIPE_THRESHOLD) {
+        return;
+      }
+
+      event.preventDefault();
+
+      if (absX > absY) {
+        setDirection(deltaX > 0 ? 1 : -1, 0);
+      } else {
+        setDirection(0, deltaY > 0 ? 1 : -1);
+      }
+
+      swipeStart = null;
+    },
+    { passive: false }
+  );
+
+  canvas.addEventListener(
+    'touchend',
+    () => {
+      swipeStart = null;
+    },
+    { passive: true }
+  );
+}
 
 function gameLoop(timestamp) {
   if (!isRunning) return;

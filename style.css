@@ -104,6 +104,45 @@ canvas {
   box-shadow: inset 0 0 0 2px rgba(110, 243, 255, 0.05), var(--shadow);
 }
 
+.touch-hint {
+  display: none;
+  font-size: 0.95rem;
+  color: rgba(245, 247, 255, 0.9);
+  margin-top: 8px;
+}
+
+.touch-controls {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.touch-controls .row {
+  display: flex;
+  gap: 10px;
+}
+
+.touch-controls .btn {
+  width: 62px;
+  height: 62px;
+  border-radius: 18px;
+  border: none;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--panel);
+  background: rgba(110, 243, 255, 0.85);
+  box-shadow: 0 10px 25px rgba(110, 243, 255, 0.25);
+  transition: transform 120ms ease, filter 120ms ease;
+}
+
+.touch-controls .btn:active {
+  transform: scale(0.95);
+  filter: brightness(0.95);
+}
+
 #restartBtn {
   width: 100%;
   padding: 14px 18px;
@@ -130,6 +169,16 @@ canvas {
 
 #restartBtn:active {
   transform: translateY(1px);
+}
+
+body.is-touch .touch-controls,
+body.is-touch .touch-hint {
+  display: flex;
+}
+
+body.is-touch .touch-hint {
+  justify-content: center;
+  text-align: center;
 }
 
 @media (max-width: 520px) {
