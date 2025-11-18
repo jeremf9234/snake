@@ -9,6 +9,39 @@
   --shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
 }
 
+body[data-theme='neon'] {
+  --bg: #05060a;
+  --panel: #111427;
+  --accent: #6ef3ff;
+  --accent-strong: #3eff8a;
+  --text: #f5f7ff;
+  --shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+  background: radial-gradient(circle at top, #0f1e3d 0%, var(--bg) 55%);
+}
+
+body[data-theme='solar'] {
+  --bg: #fff5d2;
+  --panel: #fff1c7;
+  --accent: #ff9c5a;
+  --accent-strong: #ff5f6d;
+  --text: #3d2a13;
+  --shadow: 0 15px 40px rgba(255, 158, 64, 0.35);
+  color-scheme: light;
+  background: radial-gradient(circle at top, #ffe1a8 0%, var(--bg) 55%);
+}
+
+body[data-theme='forest'] {
+  --bg: #03160f;
+  --panel: #0d2518;
+  --accent: #6ef3a0;
+  --accent-strong: #3bd080;
+  --text: #e7fff5;
+  --shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+  background: radial-gradient(circle at top, #06361f 0%, var(--bg) 55%);
+}
+
 * {
   margin: 0;
   box-sizing: border-box;
@@ -19,7 +52,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at top, #0f1e3d 0%, var(--bg) 55%);
   color: var(--text);
   padding: clamp(12px, 3vw, 40px);
 }
@@ -38,6 +70,18 @@ body {
   border: 1px solid rgba(110, 243, 255, 0.2);
   background: radial-gradient(circle at top, rgba(62, 255, 138, 0.06), transparent 70%),
     linear-gradient(145deg, rgba(5, 9, 17, 0.95), rgba(6, 8, 18, 0.85));
+}
+
+body[data-theme='solar'] .game-shell {
+  border: 1px solid rgba(255, 155, 58, 0.35);
+  background: radial-gradient(circle at top, rgba(255, 195, 113, 0.3), transparent 70%),
+    linear-gradient(145deg, rgba(255, 255, 240, 0.95), rgba(255, 239, 207, 0.85));
+}
+
+body[data-theme='forest'] .game-shell {
+  border: 1px solid rgba(62, 255, 138, 0.2);
+  background: radial-gradient(circle at top, rgba(62, 255, 138, 0.08), transparent 70%),
+    linear-gradient(145deg, rgba(6, 24, 17, 0.98), rgba(5, 18, 12, 0.88));
 }
 
 .game-header h1 {

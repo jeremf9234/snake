@@ -12,6 +12,7 @@ const touchHint = document.getElementById('touchHint');
 const touchControls = document.getElementById('touchControls');
 
 const STORAGE_KEY = 'snake-best-score';
+const THEME_STORAGE_KEY = 'snake-theme';
 const SWIPE_THRESHOLD = 28;
 const supportsPointerEvents = window.PointerEvent !== undefined;
 const isTouchDevice =
@@ -36,6 +37,11 @@ let tileSize = canvas.width / boardTiles;
 let movesPerSecond = Number(speedSelect?.value) || 10;
 
 bestScoreEl.textContent = bestScore;
+const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+if (savedTheme && themeSelect) {
+  themeSelect.value = savedTheme;
+}
+applyTheme(themeSelect?.value || savedTheme || 'neon');
 
 window.addEventListener('resize', syncCanvasSize);
 
@@ -60,7 +66,7 @@ if (gridSelect) {
 
 if (themeSelect) {
   themeSelect.addEventListener('change', () => {
-    document.body.setAttribute('data-theme', themeSelect.value);
+    applyTheme(themeSelect.value);
   });
 }
 
@@ -197,6 +203,15 @@ function syncCanvasSize() {
     canvas.height = targetSize;
   }
   tileSize = canvas.width / boardTiles;
+}
+
+function applyTheme(theme) {
+  const value = theme || 'neon';
+  document.body.setAttribute('data-theme', value);
+  if (themeSelect && themeSelect.value !== value) {
+    themeSelect.value = value;
+  }
+  localStorage.setItem(THEME_STORAGE_KEY, value);
 }
 
 function activateTouchMode() {
