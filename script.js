@@ -6,6 +6,7 @@ const restartBtn = document.getElementById('restartBtn');
 const modeSelect = document.getElementById('modeSelect');
 const speedSelect = document.getElementById('speedSelect');
 const gridSelect = document.getElementById('gridSelect');
+const themeSelect = document.getElementById('themeSelect');
 const instructionsText = document.getElementById('instructionsText');
 const touchHint = document.getElementById('touchHint');
 const touchControls = document.getElementById('touchControls');
@@ -54,6 +55,12 @@ if (gridSelect) {
     boardTiles = Number(gridSelect.value);
     syncCanvasSize();
     startGame();
+  });
+}
+
+if (themeSelect) {
+  themeSelect.addEventListener('change', () => {
+    document.body.setAttribute('data-theme', themeSelect.value);
   });
 }
 
@@ -194,12 +201,8 @@ function syncCanvasSize() {
 
 function activateTouchMode() {
   document.body.classList.add('is-touch');
-  if (instructionsText) {
-    instructionsText.textContent =
-      'Swipe sur la grille ou tape les flèches néon pour guider le serpent.';
-  }
   if (touchHint) {
-    touchHint.textContent = 'Mode tactile détecté automatiquement 🤳';
+    touchHint.textContent = '';
   }
   if (touchControls) {
     touchControls.setAttribute('aria-hidden', 'false');
@@ -438,20 +441,20 @@ function drawSnake() {
 }
 
 function drawFood() {
-  ctx.fillStyle = '#ff5f76';
-  ctx.shadowBlur = 20;
-  ctx.shadowColor = '#ff5f76';
-  const inset = tileSize * 0.3;
-  const foodSize = tileSize - inset * 2;
-  roundedRect(
-    food.x * tileSize + inset,
-    food.y * tileSize + inset,
-    foodSize,
-    foodSize,
-    Math.min(6, foodSize / 2)
+  const emoji = '🍎';
+  const fontSize = tileSize * 0.75;
+  ctx.save();
+  ctx.font = `bold ${fontSize}px "Apple Color Emoji", "Noto Color Emoji", system-ui`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.shadowColor = '#ff4f7a';
+  ctx.shadowBlur = 15;
+  ctx.fillText(
+    emoji,
+    food.x * tileSize + tileSize / 2,
+    food.y * tileSize + tileSize / 2
   );
-  ctx.fill();
-  ctx.shadowBlur = 0;
+  ctx.restore();
 }
 
 function roundedRect(x, y, width, height, radius) {

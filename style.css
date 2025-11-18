@@ -118,46 +118,49 @@ body {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  align-items: stretch;
+  align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
 }
 
 .selectors {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
   flex: 1;
-  gap: 14px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
+  align-items: center;
 }
 
 .menu {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   font-weight: 600;
   letter-spacing: 0.04em;
-  min-width: 140px;
   text-align: left;
+  font-size: 0.85rem;
 }
 
 .menu select {
   appearance: none;
-  background: rgba(17, 20, 39, 0.6);
-  border: 1px solid rgba(110, 243, 255, 0.35);
+  width: 100%;
+  background: transparent;
+  border: none;
   border-radius: 999px;
-  padding: 10px 18px;
+  padding: 8px 12px;
   color: var(--text);
   font-weight: 600;
   text-align: center;
   outline: none;
   cursor: pointer;
-  transition: border-color 150ms ease, transform 150ms ease;
+  font-size: 0.9rem;
+  border: 1px solid rgba(110, 243, 255, 0.25);
+  transition: border-color 150ms ease, background 150ms ease;
 }
 
 .menu select:focus-visible {
   border-color: var(--accent-strong);
-  transform: translateY(-1px);
+  background: rgba(17, 20, 39, 0.8);
 }
 
 canvas {
@@ -224,7 +227,7 @@ canvas {
 
 #restartBtn {
   width: auto;
-  padding: 14px 18px;
+  padding: 12px 20px;
   border: none;
   border-radius: 999px;
   background: linear-gradient(120deg, var(--accent), var(--accent-strong));
@@ -234,7 +237,7 @@ canvas {
   cursor: pointer;
   letter-spacing: 0.05em;
   transition: transform 150ms ease, filter 150ms ease;
-  min-width: 160px;
+  min-width: 150px;
 }
 
 #restartBtn:focus-visible {
@@ -251,17 +254,8 @@ canvas {
   transform: translateY(1px);
 }
 
-body.is-touch .touch-controls,
-body.is-touch .touch-hint {
+body.is-touch .touch-controls {
   display: flex;
-}
-
-body.is-touch .touch-hint {
-  justify-content: center;
-  text-align: center;
-  font-size: 0.9rem;
-  letter-spacing: 0.04em;
-  color: rgba(110, 243, 255, 0.85);
 }
 
 @media (max-width: 820px) {
