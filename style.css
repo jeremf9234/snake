@@ -114,23 +114,6 @@ body {
   transform: translateY(-1px);
 }
 
-.control-chips {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-}
-
-.chip {
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: rgba(17, 20, 39, 0.7);
-  border: 1px solid rgba(110, 243, 255, 0.2);
-  font-size: 0.82rem;
-  letter-spacing: 0.05em;
-}
-
 canvas {
   width: 100%;
   aspect-ratio: 1 / 1;
