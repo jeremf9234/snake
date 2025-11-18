@@ -1,0 +1,45 @@
+Tu es l'IA de Cursor. Ta mission : générer automatiquement un projet complet de jeu SNAKE moderne, beau visuellement et agréable à jouer, utilisable directement dans le navigateur.
+
+CONTEXTE UTILISATEUR
+- L'utilisateur est débutant complet en code.
+- Il utilisera uniquement l'éditeur Cursor.
+- Le projet doit fonctionner en ouvrant simplement le fichier index.html dans un navigateur (pas de build, pas de framework).
+
+OBJECTIF GLOBAL
+Créer un jeu Snake fluide, lisible et sympa à jouer, avec :
+- Des graphismes simples mais esthétiques (style arcade moderne).
+- Une animation fluide.
+- Un comportement de jeu clair, sans bugs visibles.
+
+TECHNOLOGIES ET STRUCTURE
+Génère un projet avec uniquement :
+- HTML5
+- CSS3
+- JavaScript Vanilla
+
+Avec **exactement 3 fichiers** à la racine du projet :
+1. index.html
+2. style.css
+3. script.js
+
+Utilise **un canvas HTML5** pour afficher le jeu.
+
+DÉTAILS ATTENDUS PAR FICHIER
+
+1) index.html
+- Structure HTML minimale, propre et valide.
+- Inclure :
+  - Un titre de page : "Snake Game".
+  - Un conteneur centré avec :
+    - Un titre (h1) du jeu.
+    - Une petite zone d'instructions (touches, objectif).
+    - Un affichage du score courant.
+    - Un affichage du meilleur score (best score) stocké côté navigateur (localStorage).
+    - Le canvas du jeu.
+    - Un bouton "Rejouer" ou "Restart" pour relancer une partie.
+- Charger style.css et script.js correctement.
+
+2) style.css
+Objectif : un style simple mais **beau et moderne**.
+- Centrer verticalement et horizontalement le contenu sur la page.
+- Utiliser une palette de couleurs agréable (fond sombre, serpent et pomme colorés).

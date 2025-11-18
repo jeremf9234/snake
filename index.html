@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snake Game</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <header class="game-header">
+        <h1>Snake Game</h1>
+        <p class="instructions">
+          Utilise les flèches directionnelles ou les touches WASD / ZQSD (clavier
+          AZERTY) pour guider le serpent. Choisis le mode classique (les murs sont
+          mortels) ou le mode portails (tu traverses les bords pour réapparaître en
+          face) puis tente de battre ton meilleur score.
+        </p>
+        <div class="scoreboard" aria-live="polite">
+          <div class="score-item" aria-label="Score actuel">
+            Score <span id="score">0</span>
+          </div>
+          <div class="score-item" aria-label="Meilleur score">
+            Meilleur <span id="bestScore">0</span>
+          </div>
+        </div>
+        <label class="mode-toggle" for="modeSelect">
+          Mode de jeu
+          <select id="modeSelect" aria-label="Choisir le mode de jeu">
+            <option value="classic">Classique</option>
+            <option value="portal">Portails</option>
+          </select>
+        </label>
+      </header>
+      <canvas
+        id="gameCanvas"
+        width="520"
+        height="520"
+        role="img"
+        aria-label="Jeu Snake sur grille"
+      ></canvas>
+      <button id="restartBtn" type="button">Rejouer</button>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
