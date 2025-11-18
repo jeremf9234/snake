@@ -12,7 +12,7 @@
         <div class="title-block">
           <h1>Neon Snake</h1>
           <p class="subtitle" id="instructionsText">
-            Swipe ou flèches, ramasse les orbes et enchaîne les combos.
+            Choisis ton rythme et ta grille, puis fais glisser le serpent pour avaler un max d'orbes.
           </p>
         </div>
         <div class="hud">
@@ -33,6 +33,31 @@
           </label>
         </div>
       </header>
+      <section class="control-panel" aria-label="Paramètres de la partie">
+        <button id="restartBtn" type="button">Relancer</button>
+        <div class="selectors">
+          <label class="menu" for="speedSelect">
+            Vitesse
+            <select id="speedSelect" aria-label="Choisir la vitesse du serpent">
+              <option value="6">Zen</option>
+              <option value="8">Cool</option>
+              <option value="10" selected>Standard</option>
+              <option value="12">Rapide</option>
+              <option value="15">Turbo</option>
+            </select>
+          </label>
+          <label class="menu" for="gridSelect">
+            Grille
+            <select id="gridSelect" aria-label="Choisir la taille de la grille">
+              <option value="18">Compacte</option>
+              <option value="22">Classique</option>
+              <option value="26" selected>Large</option>
+              <option value="30">XL</option>
+              <option value="34">XXL</option>
+            </select>
+          </label>
+        </div>
+      </section>
       <section class="play-area">
         <canvas
           id="gameCanvas"
@@ -53,7 +78,6 @@
           </div>
         </div>
       </section>
-      <button id="restartBtn" type="button">Rejouer</button>
     </main>
     <script src="script.js"></script>
   </body>

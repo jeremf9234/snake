@@ -4,14 +4,13 @@ const scoreEl = document.getElementById('score');
 const bestScoreEl = document.getElementById('bestScore');
 const restartBtn = document.getElementById('restartBtn');
 const modeSelect = document.getElementById('modeSelect');
+const speedSelect = document.getElementById('speedSelect');
+const gridSelect = document.getElementById('gridSelect');
 const instructionsText = document.getElementById('instructionsText');
 const touchHint = document.getElementById('touchHint');
 const touchControls = document.getElementById('touchControls');
 
-const GRID_SIZE = 20;
-const SPEED = 10; // moves per second
 const STORAGE_KEY = 'snake-best-score';
-const boardTiles = canvas.width / GRID_SIZE;
 const SWIPE_THRESHOLD = 28;
 const supportsPointerEvents = window.PointerEvent !== undefined;
 const isTouchDevice =
@@ -31,14 +30,35 @@ let isRunning = false;
 let gameOver = false;
 let mode = modeSelect.value;
 let swipeStart = null;
+let boardTiles = Number(gridSelect?.value) || 26;
+let tileSize = canvas.width / boardTiles;
+let movesPerSecond = Number(speedSelect?.value) || 10;
 
 bestScoreEl.textContent = bestScore;
+
+window.addEventListener('resize', syncCanvasSize);
 
 if (isTouchDevice) {
   activateTouchMode();
 }
 
+if (speedSelect) {
+  speedSelect.addEventListener('change', () => {
+    movesPerSecond = Number(speedSelect.value);
+    startGame();
+  });
+}
+
+if (gridSelect) {
+  gridSelect.addEventListener('change', () => {
+    boardTiles = Number(gridSelect.value);
+    syncCanvasSize();
+    startGame();
+  });
+}
+
 function startGame() {
+  syncCanvasSize();
   snake = [
     { x: Math.floor(boardTiles / 2) + 1, y: Math.floor(boardTiles / 2) },
     { x: Math.floor(boardTiles / 2), y: Math.floor(boardTiles / 2) }
@@ -157,6 +177,20 @@ modeSelect.addEventListener('change', () => {
   mode = modeSelect.value;
   startGame();
 });
+
+function syncCanvasSize() {
+  const ratio = window.devicePixelRatio || 1;
+  const displayWidth = canvas.clientWidth || canvas.width;
+  const displayHeight = canvas.clientHeight || canvas.width;
+  const baseSize = Math.min(displayWidth || canvas.width, displayHeight || canvas.height);
+  const targetSize = Math.round(baseSize * ratio);
+  if (!targetSize) return;
+  if (canvas.width !== targetSize || canvas.height !== targetSize) {
+    canvas.width = targetSize;
+    canvas.height = targetSize;
+  }
+  tileSize = canvas.width / boardTiles;
+}
 
 function activateTouchMode() {
   document.body.classList.add('is-touch');
@@ -285,7 +319,7 @@ function gameLoop(timestamp) {
 
   frameId = requestAnimationFrame(gameLoop);
 
-  if (timestamp - lastStepTime < 1000 / SPEED) {
+  if (timestamp - lastStepTime < 1000 / movesPerSecond) {
     draw();
     return;
   }
@@ -370,14 +404,15 @@ function drawBoard() {
 
   ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
   for (let i = 0; i <= boardTiles; i++) {
+    const linePos = i * tileSize;
     ctx.beginPath();
-    ctx.moveTo(i * GRID_SIZE, 0);
-    ctx.lineTo(i * GRID_SIZE, canvas.height);
+    ctx.moveTo(linePos, 0);
+    ctx.lineTo(linePos, canvas.height);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(0, i * GRID_SIZE);
-    ctx.lineTo(canvas.width, i * GRID_SIZE);
+    ctx.moveTo(0, linePos);
+    ctx.lineTo(canvas.width, linePos);
     ctx.stroke();
   }
 }
@@ -388,12 +423,14 @@ function drawSnake() {
     ctx.fillStyle = `hsl(${120 - intensity * 60}, 90%, 55%)`;
     ctx.shadowBlur = index === 0 ? 20 : 0;
     ctx.shadowColor = '#3eff8a';
+    const padding = Math.max(tileSize * 0.1, 2);
+    const radius = Math.min(8, (tileSize - padding) / 2);
     roundedRect(
-      segment.x * GRID_SIZE,
-      segment.y * GRID_SIZE,
-      GRID_SIZE - 2,
-      GRID_SIZE - 2,
-      5
+      segment.x * tileSize + padding / 2,
+      segment.y * tileSize + padding / 2,
+      tileSize - padding,
+      tileSize - padding,
+      radius
     );
     ctx.fill();
     ctx.shadowBlur = 0;
@@ -404,12 +441,14 @@ function drawFood() {
   ctx.fillStyle = '#ff5f76';
   ctx.shadowBlur = 20;
   ctx.shadowColor = '#ff5f76';
+  const inset = tileSize * 0.3;
+  const foodSize = tileSize - inset * 2;
   roundedRect(
-    food.x * GRID_SIZE + 4,
-    food.y * GRID_SIZE + 4,
-    GRID_SIZE - 8,
-    GRID_SIZE - 8,
-    6
+    food.x * tileSize + inset,
+    food.y * tileSize + inset,
+    foodSize,
+    foodSize,
+    Math.min(6, foodSize / 2)
   );
   ctx.fill();
   ctx.shadowBlur = 0;
