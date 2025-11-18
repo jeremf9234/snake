@@ -38,24 +38,26 @@
           <span class="chip">Swipe mobile</span>
         </div>
       </header>
-      <canvas
-        id="gameCanvas"
-        width="520"
-        height="520"
-        role="img"
-        aria-label="Jeu Snake sur grille"
-      ></canvas>
-      <div class="touch-hint" id="touchHint" aria-live="polite"></div>
-      <div class="touch-controls" id="touchControls" aria-hidden="true">
-        <div class="row">
-          <button class="btn" data-direction="up" type="button" aria-label="Aller vers le haut">▲</button>
+      <section class="play-area">
+        <canvas
+          id="gameCanvas"
+          width="520"
+          height="520"
+          role="img"
+          aria-label="Jeu Snake sur grille"
+        ></canvas>
+        <div class="touch-hint" id="touchHint" aria-live="polite"></div>
+        <div class="touch-controls" id="touchControls" aria-hidden="true">
+          <div class="row">
+            <button class="btn" data-direction="up" type="button" aria-label="Aller vers le haut">▲</button>
+          </div>
+          <div class="row">
+            <button class="btn" data-direction="left" type="button" aria-label="Aller vers la gauche">◀</button>
+            <button class="btn" data-direction="down" type="button" aria-label="Aller vers le bas">▼</button>
+            <button class="btn" data-direction="right" type="button" aria-label="Aller vers la droite">▶</button>
+          </div>
         </div>
-        <div class="row">
-          <button class="btn" data-direction="left" type="button" aria-label="Aller vers la gauche">◀</button>
-          <button class="btn" data-direction="down" type="button" aria-label="Aller vers le bas">▼</button>
-          <button class="btn" data-direction="right" type="button" aria-label="Aller vers la droite">▶</button>
-        </div>
-      </div>
+      </section>
       <button id="restartBtn" type="button">Rejouer</button>
     </main>
     <script src="script.js"></script>
