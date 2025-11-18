@@ -9,28 +9,34 @@
   <body>
     <main class="game-shell">
       <header class="game-header">
-        <h1>Snake Game</h1>
-        <p class="instructions" id="instructionsText">
-          Utilise les flèches directionnelles ou les touches WASD / ZQSD (clavier
-          AZERTY) pour guider le serpent. Choisis le mode classique (les murs sont
-          mortels) ou le mode portails (tu traverses les bords pour réapparaître en
-          face) puis tente de battre ton meilleur score.
-        </p>
-        <div class="scoreboard" aria-live="polite">
-          <div class="score-item" aria-label="Score actuel">
-            Score <span id="score">0</span>
-          </div>
-          <div class="score-item" aria-label="Meilleur score">
-            Meilleur <span id="bestScore">0</span>
-          </div>
+        <div class="title-block">
+          <h1>Neon Snake</h1>
+          <p class="subtitle" id="instructionsText">
+            Swipe ou flèches, ramasse les orbes et enchaîne les combos.
+          </p>
         </div>
-        <label class="mode-toggle" for="modeSelect">
-          Mode de jeu
-          <select id="modeSelect" aria-label="Choisir le mode de jeu">
-            <option value="classic">Classique</option>
-            <option value="portal">Portails</option>
-          </select>
-        </label>
+        <div class="hud">
+          <div class="scoreboard" aria-live="polite">
+            <div class="score-item" aria-label="Score actuel">
+              Score <span id="score">0</span>
+            </div>
+            <div class="score-item" aria-label="Meilleur score">
+              Meilleur <span id="bestScore">0</span>
+            </div>
+          </div>
+          <label class="mode-toggle" for="modeSelect">
+            Mode
+            <select id="modeSelect" aria-label="Choisir le mode de jeu">
+              <option value="classic">Classique</option>
+              <option value="portal">Portails</option>
+            </select>
+          </label>
+        </div>
+        <div class="control-chips">
+          <span class="chip">⬆︎ ⬇︎ ⬅︎ ➡︎</span>
+          <span class="chip">WASD / ZQSD</span>
+          <span class="chip">Swipe mobile</span>
+        </div>
       </header>
       <canvas
         id="gameCanvas"

@@ -162,7 +162,7 @@ function activateTouchMode() {
   document.body.classList.add('is-touch');
   if (instructionsText) {
     instructionsText.textContent =
-      'Glisse le doigt sur la grille ou utilise les boutons tactiles pour guider le serpent. Les modes classique et portails restent disponibles sur mobile.';
+      'Swipe sur la grille ou tape les flèches néon pour guider le serpent.';
   }
   if (touchHint) {
     touchHint.textContent = 'Mode tactile détecté automatiquement 🤳';
