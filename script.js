@@ -13,6 +13,7 @@ const SPEED = 10; // moves per second
 const STORAGE_KEY = 'snake-best-score';
 const boardTiles = canvas.width / GRID_SIZE;
 const SWIPE_THRESHOLD = 28;
+const supportsPointerEvents = window.PointerEvent !== undefined;
 const isTouchDevice =
   window.matchMedia('(pointer: coarse)').matches ||
   'ontouchstart' in window ||
@@ -170,61 +171,113 @@ function activateTouchMode() {
     touchControls.setAttribute('aria-hidden', 'false');
     const buttons = touchControls.querySelectorAll('[data-direction]');
     buttons.forEach(button => {
-      const handler = event => {
+      const triggerDirection = event => {
         event.preventDefault();
-        setDirectionFromName(button.dataset.direction);
+        const dir = event.currentTarget?.dataset.direction;
+        if (dir) {
+          setDirectionFromName(dir);
+        }
       };
-      button.addEventListener('touchstart', handler, { passive: false });
-      button.addEventListener('click', handler);
+      if (supportsPointerEvents) {
+        button.addEventListener(
+          'pointerdown',
+          event => {
+            if (event.pointerType === 'mouse') return;
+            triggerDirection(event);
+          },
+          { passive: false }
+        );
+      } else {
+        button.addEventListener('touchstart', triggerDirection, { passive: false });
+      }
+      button.addEventListener('click', triggerDirection);
     });
   }
 
-  canvas.addEventListener(
-    'touchstart',
-    event => {
-      if (event.touches.length > 0) {
-        swipeStart = {
-          x: event.touches[0].clientX,
-          y: event.touches[0].clientY
-        };
-      }
-    },
-    { passive: true }
-  );
+  const beginSwipe = (pointX, pointY) => {
+    swipeStart = { x: pointX, y: pointY };
+  };
 
-  canvas.addEventListener(
-    'touchmove',
-    event => {
-      if (!swipeStart || event.touches.length === 0) return;
-      const deltaX = event.touches[0].clientX - swipeStart.x;
-      const deltaY = event.touches[0].clientY - swipeStart.y;
-      const absX = Math.abs(deltaX);
-      const absY = Math.abs(deltaY);
+  const trackSwipe = (pointX, pointY, event) => {
+    if (!swipeStart) return;
+    const deltaX = pointX - swipeStart.x;
+    const deltaY = pointY - swipeStart.y;
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
 
-      if (absX < SWIPE_THRESHOLD && absY < SWIPE_THRESHOLD) {
-        return;
-      }
+    if (absX < SWIPE_THRESHOLD && absY < SWIPE_THRESHOLD) {
+      return;
+    }
 
-      event.preventDefault();
+    event.preventDefault();
 
-      if (absX > absY) {
-        setDirection(deltaX > 0 ? 1 : -1, 0);
-      } else {
-        setDirection(0, deltaY > 0 ? 1 : -1);
-      }
+    if (absX > absY) {
+      setDirection(deltaX > 0 ? 1 : -1, 0);
+    } else {
+      setDirection(0, deltaY > 0 ? 1 : -1);
+    }
 
-      swipeStart = null;
-    },
-    { passive: false }
-  );
+    swipeStart = null;
+  };
 
-  canvas.addEventListener(
-    'touchend',
-    () => {
-      swipeStart = null;
-    },
-    { passive: true }
-  );
+  const endSwipe = () => {
+    swipeStart = null;
+  };
+
+  if (supportsPointerEvents) {
+    canvas.addEventListener(
+      'pointerdown',
+      event => {
+        if (event.pointerType === 'mouse') return;
+        beginSwipe(event.clientX, event.clientY);
+      },
+      { passive: true }
+    );
+    canvas.addEventListener(
+      'pointermove',
+      event => {
+        if (event.pointerType === 'mouse') return;
+        trackSwipe(event.clientX, event.clientY, event);
+      },
+      { passive: false }
+    );
+    canvas.addEventListener(
+      'pointerup',
+      event => {
+        if (event.pointerType === 'mouse') return;
+        endSwipe();
+      },
+      { passive: true }
+    );
+    canvas.addEventListener(
+      'pointercancel',
+      event => {
+        if (event.pointerType === 'mouse') return;
+        endSwipe();
+      },
+      { passive: true }
+    );
+  } else {
+    canvas.addEventListener(
+      'touchstart',
+      event => {
+        if (event.touches.length > 0) {
+          beginSwipe(event.touches[0].clientX, event.touches[0].clientY);
+        }
+      },
+      { passive: true }
+    );
+    canvas.addEventListener(
+      'touchmove',
+      event => {
+        if (event.touches.length === 0) return;
+        trackSwipe(event.touches[0].clientX, event.touches[0].clientY, event);
+      },
+      { passive: false }
+    );
+    canvas.addEventListener('touchend', endSwipe, { passive: true });
+    canvas.addEventListener('touchcancel', endSwipe, { passive: true });
+  }
 }
 
 function gameLoop(timestamp) {
