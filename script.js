@@ -456,7 +456,7 @@ function drawSnake() {
 }
 
 function drawFood() {
-  const emoji = '🍎';
+  const emoji = '🧸';
   const fontSize = tileSize * 0.75;
   ctx.save();
   ctx.font = `bold ${fontSize}px "Apple Color Emoji", "Noto Color Emoji", system-ui`;
